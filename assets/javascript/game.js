@@ -11,11 +11,74 @@
 
 // QUESTION AND ANSWER OBJECT
 
+var questions = [
+    'In order to defeat the final boss in the original Legend of Zelda you had to use a...',
+    'Before its North Amerrican release this famous game was featured in the film "The Wizard".',
+    'In the Legend of Zelda - A Link to the Past. In order to travel between the dark world and light world Link used a...',
+    'In Super Mario Bros 2. The first boss you encounter was defeated by...',
+    'The NES Power Pad was bundled with which game?'
+];
+
+var answers = [];
+
+answers[0] = [
+  'Magic Sword',
+  'Ocarina',
+  'Magic Spell Scepter',
+  'Silver Arrow'
+];
+
+answers[1] = [
+  'Ninja Gaiden',
+  'Double Dragon',
+  'Savage Freddy',
+  'Super Mario Bros 3',
+]
+
+answers[2] = [
+  'Magic Wand',
+  'Magic Mirror',
+  'Magic Scepter',
+  'Old Shoe'
+];
+
+answers[3] = [
+  'Jumping on it',
+  'Shooting fireballs at it',
+  'Throwing darts at it',
+  'Egging it'
+];
+
+answers[4] = [
+  'Stadium Events',
+  'Super Mario Bros',
+  'Track and Field',
+  'World Class Track Meet'
+];
+
+var correct_answers = [3, 3, 1, 3, 3];
+
+function drawQuestions() {
+  var $container = $('#questions-container');
+  for (var idx=0; idx < questions.length; idx++) {
+    var q = questions[idx];
+    var ans = answers[idx];
+    var $div = $('<div>');
+    $div.append($('<p>').addClass('questions').text(q));
+    $container.append($div);
+    for (var aidx = 0; aidx < ans.length; aidx++) {
+      var $answer = $('<input>').attr('type', 'radio').attr('name', 'question-' + idx).val(aidx);
+      $container.append($answer);
+      $container.append(' ' + ans[aidx]);
+      $container.append($('<br>'));
+    }
+    $container.append($('<br>'));
+  }
+}
 
 // Launch Start Modal when page loads and vertically center on any screen size.
 $(document).ready(function () {
     $("#myModal").modal('show');
-
 
     function alignModal() {
         var modalDialog = $(this).find(".modal-dialog");
@@ -34,6 +97,7 @@ $(document).ready(function () {
 
 // Timer to start on clicking START.
 $("#start").click(function () {
+  drawQuestions();
   var time = 60;
   var interval = setInterval(function () {
     // Reduce timer by 1 second
@@ -62,28 +126,12 @@ $("#reload").click(function () {
 
 // Logic for anwers.
 function checkAnswers() {
-
     var correct = 0;
-    var question1 = document.quiz.question1.value;
-    var question2 = document.quiz.question2.value;
-    var question3 = document.quiz.question3.value;
-    var question4 = document.quiz.question4.value;
-    var question5 = document.quiz.question5.value;
-
-    if (question1 == "silver-arrow") {
+    for (var i = 0; i < questions.length; i++) {
+      var a = $('input[name=question-' + i + ']:checked').val();
+      if (a == correct_answers[i]) {
         correct++;
-    }
-    if (question2 == "smb3") {
-        correct++;
-    }
-    if (question3 == "magic-mirror") {
-        correct++;
-    }
-    if (question4 == "egging-it") {
-        correct++;
-    }
-    if (question5 == "world-class") {
-        correct++;
+      }
     }
 
     var messages = ["Good job!", "You did ok...", "Better luck next time!"];
