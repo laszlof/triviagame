@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     function alignModal() {
         var modalDialog = $(this).find(".modal-dialog");
-        // Applying the top margin on modal dialog to align it vertically center 
+        // Applying the top margin on modal dialog to align it vertically center
         modalDialog.css("margin-top", Math.max(0, ($(window).height() - modalDialog.height()) / 2));
     }
     // Align modal when it is displayed
@@ -34,26 +34,24 @@ $(document).ready(function () {
 
 // Timer to start on clicking START.
 $("#start").click(function () {
-
-    var timer2 = "1:00";
-    var interval = setInterval(function () {
-
-
-        var timer = timer2.split(':');
-        var minutes = parseInt(timer[0], 10);
-        var seconds = parseInt(timer[1], 10);
-        --seconds;
-        minutes = (seconds < 0) ? --minutes : minutes;
-        seconds = (seconds < 0) ? 59 : seconds;
-        seconds = (seconds < 10) ? '0' + seconds : seconds;
-        $('#timer').html(minutes + ':' + seconds);
-        timer2 = minutes + ':' + seconds;
-        if (minutes < 0) {
-            clearInterval(interval);
-            $('#timesUpModal').modal('show');
-            }
-    }, 1000);
-})
+  var time = 60;
+  var interval = setInterval(function () {
+    // Reduce timer by 1 second
+    time--;
+    // Calculate minutes and seconds from time left
+    var minutes = Math.floor(time / 60);
+    var seconds = time - (minutes * 60);
+    // Convert seconds to a string and pad it with zeros on the front
+    seconds = seconds.toString().padStart(2, '0');
+    // Update UI
+    $('#timer').html(minutes + ':' + seconds);
+    // When our timer reaches zero, the game is over.
+    if (time === 0) {
+      clearInterval(interval);
+      $('#timesUpModal').modal('show');
+    }
+  }, 1000);
+});
 
 
 // Reload page upon closeout of answer modal.
@@ -111,8 +109,3 @@ function checkAnswers() {
     document.getElementById("number-correct").innerHTML = "You got " + correct + " correct!";
     document.getElementById("images").src = images[range];
 }
-
-
-
-
-
